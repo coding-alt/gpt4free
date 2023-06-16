@@ -1,0 +1,7 @@
+curl_cffi
+browser_cookie3
+flask_cors
+flask
+quickjs
+gradio
+openai
