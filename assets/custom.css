@@ -164,6 +164,7 @@ thead th {
 }
 
 /* 代码高亮样式 */
+.highlight .operation { background-color: none !important }
 .highlight .hll { background-color: #49483e !important }
 .highlight .c { color: #75715e !important } /* Comment */
 .highlight .err { color: #960050 !important; background-color: #1e0010 } /* Error */
@@ -233,4 +234,3 @@ thead th {
 .highlight .vi { color: #f8f8f2  !important} /* Name.Variable.Instance */
 .highlight .vm { color: #f8f8f2  !important} /* Name.Variable.Magic */
 .highlight .il { color: #ae81ff  !important} /* Literal.Number.Integer.Long */
-
