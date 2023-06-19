@@ -4,7 +4,7 @@ unstable g4f-v2 early-beta, only for developers !!
 
 run server:
 ```sh
-python3 -m interference.app
+python -m interference.app
 ```
 
 ```py
