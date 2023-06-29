@@ -4,8 +4,15 @@ from ...typing import sha256, Dict, get_type_hints
 url = 'https://chat-gpt.org/chat'
 model = ['gpt-3.5-turbo']
 supports_stream = False
+needs_auth = False
 
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
+    base = ''
+    for message in messages:
+        base += '%s: %s\n' % (message['role'], message['content'])
+    base += 'assistant:'
+    
+    
     headers = {
         'authority': 'chat-gpt.org',
         'accept': '*/*',
@@ -23,7 +30,7 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     }
 
     json_data = {
-        'message': messages[-1]['content'],
+        'message':base,
         'temperature': 1,
         'presence_penalty': 0,
         'top_p': 1,

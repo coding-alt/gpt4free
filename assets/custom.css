@@ -3,18 +3,38 @@
     --chatbot-color-dark: #FFFFFF;
     --chatbot-background-color-light: #F3F3F3;
     --chatbot-background-color-dark: #121111;
-    --message-user-background-color-light: #95EC69;
+    --message-user-background-color-light: #D2F9D1;
     --message-user-background-color-dark: #26B561;
-    --message-bot-background-color-light: #FFFFFF;
+    --message-bot-background-color-light: #EEEEEE;
     --message-bot-background-color-dark: #2C2C2C;
 }
 
 footer {
     display: none !important;
 }
+/* 取消圆角 */
+.form {
+    box-shadow: none!important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 0px!important;
+}
+.generating {
+    border: 0px!important;
+}
+textarea {
+    box-shadow: none!important;
+}
+.textbox {
+    padding: 0px!important;
+    border-radius: 0px!important;
+}
+#chatbot {
+    height: 100%!important;
+    line-height: 100%!important;
+}
 /* 亮色（默认） */
 #chatbot {
-    background-color: var(--chatbot-background-color-light) !important;
+    background: none !important;
     color: var(--chatbot-color-light) !important;
 }
 [data-testid = "bot"] {
@@ -22,6 +42,9 @@ footer {
 }
 [data-testid = "user"] {
     background-color: var(--message-user-background-color-light) !important;
+}
+[data-testid = "bot"] ol {
+    padding-inline-start: 2em;
 }
 /* 暗色 */
 .dark #chatbot {
@@ -50,12 +73,12 @@ footer {
     min-width: calc(var(--text-md)*var(--line-md) + 2*var(--spacing-xl));
 }
 [data-testid = "bot"] {
-    max-width: 65% !important;
-    border-bottom-left-radius: 0 !important;
+    max-width: 75% !important;
+    /* border-bottom-left-radius: 0 !important; */
 }
 [data-testid = "user"] {
-    max-width: 65% !important;
-    border-bottom-right-radius: 0 !important;
+    max-width: 75% !important;
+    /* border-bottom-right-radius: 0 !important; */
 }
 
 .message p {
@@ -142,14 +165,14 @@ thead th {
     border-radius: 6px;
     margin: 0 2px 0 2px;
     padding: .2em .4em .1em .4em;
-    background-color: rgba(175,184,193,0.2);
+    /* background-color: rgba(175,184,193,0.2); */
 }
 /* 代码块 */
 .message pre code {
     display: block;
     overflow: auto;
     white-space: pre;
-    background-color: hsla(0, 0%, 0%, 80%)!important;
+    /* background-color: hsla(0, 0%, 0%, 80%)!important; */
     border-radius: 10px;
     padding: 1.2em 1em 0em .5em;
     margin: 0.6em 2em 1em 0.2em;
@@ -164,7 +187,7 @@ thead th {
 }
 
 /* 代码高亮样式 */
-.highlight .operation { background-color: none !important }
+.highlight .operation { background: none!important }
 .highlight .hll { background-color: #49483e !important }
 .highlight .c { color: #75715e !important } /* Comment */
 .highlight .err { color: #960050 !important; background-color: #1e0010 } /* Error */

@@ -1,11 +1,10 @@
-# implement proxy argument
-
 import os, requests, json, browser_cookie3, re, random
 from ...typing import sha256, Dict, get_type_hints
 
 url = 'https://bard.google.com'
 model = ['Palm2']
 supports_stream = False
+needs_auth = True
 
 def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     psid = {cookie.name: cookie.value for cookie in browser_cookie3.chrome(
@@ -16,20 +15,19 @@ def _create_completion(model: str, messages: list, stream: bool, **kwargs):
     ])
     prompt = f'{formatted}\nAssistant:'
 
-    proxy = None
+    proxy = kwargs.get('proxy', False)
+    if proxy == False:
+        print('warning!, you did not give a proxy, a lot of countries are banned from Google Bard, so it may not work')
     
-    if proxy == None:
-        raise Exception('Proxy is required for Bard (set in g4f/Provider/Providers/Bard.py line 18)')
-    
-    snlm0e = False
+    snlm0e = None
     conversation_id = None
     response_id = None
     choice_id = None
 
     client = requests.Session()
     client.proxies = {
-        'http': f'https://{proxy}',
-        'https': f'https://{proxy}'} if proxy else None
+        'http': f'http://{proxy}',
+        'https': f'http://{proxy}'} if proxy else None
 
     client.headers = {
         'authority': 'bard.google.com',

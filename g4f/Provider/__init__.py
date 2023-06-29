@@ -1,18 +1,20 @@
 from . import Provider
 from .Providers import (
-    Phind, 
-    You, 
-    Bing, 
-    Openai, 
-    Yqcloud, 
-    Theb, 
+    Ails,
+    You,
+    Bing,
+    Yqcloud,
+    Theb,
     Aichat,
-    Ora,
-    Aws,
     Bard,
     Vercel,
-    Pierangelo,
-    Forefront
+    Forefront,
+    Lockchat,
+    Liaobots,
+    H2o,
+    ChatgptLogin,
+    DeepAi,
+    GetGpt
 )
 
 Palm = Bard

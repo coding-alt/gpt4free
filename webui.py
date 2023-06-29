@@ -3,23 +3,94 @@ import gradio
 
 with open("assets/custom.css", "r", encoding="utf-8") as f:
     customCSS = f.read()
+messages = []
 
 def generate(prompt, history = []):
-    response = g4f.ChatCompletion.create(
-        stream=True,
-        model='gpt-3.5-turbo',
-        messages=[{"role": "user", "content": prompt}]
-    )
+    global messages
+    messages = messages[-5:]
+
     history += [[prompt, None]]
     history[-1][1] = ''
+    result = ""
+    
+    messages.append(
+        {"role": "user", "content": prompt}
+    )
+
+    model = g4f.Model.gpt_35_turbo
+
+    response = g4f.ChatCompletion.create(
+        stream = True,
+        model = model,
+        messages = [{"role": "user", "content": prompt}]
+    )
+    
     for content in response:
+        result += content
         history[-1][1] += content
         yield '', history
 
-with gradio.Blocks(title = 'AI问答助手', css=customCSS, theme = gradio.themes.Soft(primary_hue=gradio.themes.colors.blue)) as X:
-    gradio.Markdown("## AI问答助手")
-    chatbot = gradio.Chatbot(elem_id="chatbot").style(height=500)
-    msg = gradio.Textbox(show_label=False, placeholder="请输入您的问题")
+    messages.append(
+        {"role": "assistant", "content": result}
+    )
+
+with gradio.Blocks(title='AI问答助手', css=customCSS, theme = gradio.themes.Soft(primary_hue=gradio.themes.colors.green)) as X:
+    chatbot = gradio.Chatbot(elem_id="chatbot", label='AI问答助手')
+    msg = gradio.Textbox(elem_classes="textbox", show_label=False, placeholder="来说点什么吧...（Shift + Enter = 换行，Enter = 发送）")
+    gradio.Examples(
+        label='还没想好问什么，试试这些问题吧...',
+        examples=['能否帮我制定一个健身计划，需要包括什么运动项目以及每个项目的次数和重量？',
+                '请给我推荐一些适合夏季穿着的衣服和鞋子。',
+                '我需要制作一份PPT来展示我们的公司发展历程，请帮我设计一些幻灯片模板和图表。',
+                '请给我讲解一下什么是人工智能，它有哪些应用领域？',
+                '我需要帮助我检查我的英语论文是否存在语法和拼写错误，你可以帮我做这件事吗？',
+                '请给我介绍一些动漫或者电影，讲述有关职场和生活中的成长与奋斗。',
+                '我想了解如何在互联网上开展网店生意，请给我提供一些相关经验和建议。',
+                '请为我制作一个简约的logo，用于我公司产品的宣传和推广。',
+                '我想开一家餐厅，请给我列出需要准备的基本设备和原材料以及推荐的菜品。',
+                '请介绍一些经典的文学作品，让我能够阅读并理解这些作品其中的内涵。',
+                '需要组织一场企业学习活动，请帮我设计一些能够激发员工参与积极性的游戏和活动。',
+                '请给我推荐一些适合现代生活的电器，例如智能锁和智能门铃等等。',
+                '我需要设计一个网站，你能否帮助我考虑一些网站设计的要点和细节。',
+                '请介绍一些适合初学者的编程语言，例如Python和Java。',
+                '我需要制作一份营销计划，你能否帮助我分析当前市场情况并给出实战营销策略。',
+                '请为我写一份中英文简历，以便于我能够更好地应聘相关的工作职位。',
+                '我想了解一些关于旅游路线的信息，请给我介绍一些适合自驾的路线和景点。',
+                '请给我推荐一些国外优秀的学术期刊或者研究机构，让我能够跟进前沿的学术研究和进展。',
+                '我需要租一辆车，你能否帮我比较一下不同租车公司的价格和服务质量。',
+                '请给我推荐一些适合小孩子看的动画片，并分析其中的教育价值和文化背景。',
+                '我想写一本小说，请给我提供一些写作技巧和高品质的写作素材。',
+                '我需要制作一份产品广告，请帮我设计一个新颖有趣的广告语。',
+                '请给我介绍一些关于创业的经验和教训，让我能够更好地准备自己的创业之路。',
+                '我想精通某种技能，例如轻松掌握PS软件的设计技巧，请帮我制定一个详细的学习计划。',
+                '请给我推荐一些适合青年学生参加的社会实践活动，让我能够更好地了解社会和服务社会。',
+                '我需要维护一个网站，你能否帮我了解一些网站运维和安全方面的知识。',
+                '请给我介绍一些经典的艺术作品，例如写实主义和抽象艺术等等。',
+                '我想在网络上开办一些课程培训，你能否帮我设计并制作相关的教学课件和教材。',
+                '请给我推荐一些适合国内消费的产品，例如手机和电脑等等。',
+                '我需要给一个公司撰写一份商业计划书，你能否帮我推荐一些优秀的写作模板和范本。',
+                '请介绍一些适合健身和减肥的食品和饮品，例如代餐和果蔬汁等等。',
+                '我需要学习PTE考试，请帮我给出一些PTE考试的备考建议和复习资料。',
+                '请给我推荐一些适合儿童看的科普图书和小说，让他们能够快速掌握科学基础知识。',
+                '我想制作一部短片，请帮我设计一个新颖有趣的剧本和拍摄方案。',
+                '请给我介绍一些名人传记和经典文化书籍，让我能够更好地了解历史和文化。',
+                '我需要为我的网站写一些SEO优化的文章，请帮我分析一些关键词和外链策略。',
+                '请给我推荐一些适合民间传统节日的食品和习俗，例如中秋和春节等等。',
+                '我需要为我的剧场创作一份新的舞台剧，请帮我编写并排列好剧本和剧情。',
+                '请给我介绍一些经典的历史事件和人物，让我能够更好地理解人类历史的发展与进程。',
+                '我想创办一家企业，请给我提供一些关于公司管理和组织架构的经验和反思。',
+                '请给我推荐一些适合学生看的经典电影，并分析其中的文化和思想内涵。',
+                '我需要学习增强现实技术，请帮我考虑一下需要掌握的技能和开发工具。',
+                '请介绍一些国内外知名的美食品牌和餐厅，让我能够吃到更好的美食体验。',
+                '我想写一些励志文章，请帮我设计一些鼓舞人心的故事和素材。',
+                '我需要为公司做一个五年的发展计划，请帮我分析市场趋势和公司内部的优势和缺陷。',
+                '请给我推荐一些适合学生阅读的经典小说和文学作品，并分析其中的文化内涵。',
+                '我需要为我的课堂制作一份PPT，你能否帮我设计一些有趣的课件模板和图表。',
+                '请介绍一些国际品牌和公司，让我能够了解他们的管理经验和营销策略。',
+                '我想知道一些关于婚姻家庭和子女教育的经验和教训，请给我提供一些思路和观点。',
+                '请给我推荐一些适合女性朋友看的优秀电影和剧集，例如爱情和家庭题'],
+        inputs=msg,
+    )
 
     msg.submit(generate, [msg, chatbot], [msg, chatbot])
 

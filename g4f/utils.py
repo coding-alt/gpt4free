@@ -1,5 +1,6 @@
 import browser_cookie3
 
+
 class Utils:
     browsers = [ 
         browser_cookie3.chrome,   # 62.74% market share

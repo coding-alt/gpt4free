@@ -15,17 +15,13 @@ def chat_completions():
     streaming = request.json.get('stream', False)
     model = request.json.get('model', 'gpt-3.5-turbo')
     messages = request.json.get('messages')
-
-    models = {
-        'gpt-3.5-turbo': 'gpt-3.5-turbo-0301'
-    }
-
-    response = ChatCompletion.create(model=Model.gpt_35_turbo, stream=streaming,
+    
+    response = ChatCompletion.create(model=model, stream=streaming,
                                      messages=messages)
-
+    
     if not streaming:
         while 'curl_cffi.requests.errors.RequestsError' in response:
-            response = ChatCompletion.create(model=Model.gpt_35_turbo, stream=streaming,
+            response = ChatCompletion.create(model=model, stream=streaming,
                                              messages=messages)
 
         completion_timestamp = int(time.time())
@@ -36,7 +32,7 @@ def chat_completions():
             'id': 'chatcmpl-%s' % completion_id,
             'object': 'chat.completion',
             'created': completion_timestamp,
-            'model': models[model],
+            'model': model,
             'usage': {
                 'prompt_tokens': None,
                 'completion_tokens': None,

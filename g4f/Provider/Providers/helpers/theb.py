@@ -1,5 +1,6 @@
 import json
 import sys
+from re import findall
 from curl_cffi import requests
 
 config = json.loads(sys.argv[1])
@@ -28,13 +29,11 @@ json_data = {
 
 def format(chunk):
     try:
-        chunk_json = json.loads(chunk.decode('utf-8'))
-        completion_chunk = chunk_json['detail']['choices'][0]['delta']['content']
-        
-        print(completion_chunk, flush=True, end = '')
+        completion_chunk = findall(r'content":"(.*)"},"fin', chunk.decode())[0]
+        print(completion_chunk, flush=True, end='')
 
     except Exception as e:
-        print('[ERROR] an error occured, retrying... |', e, flush=True)
+        print(f'[ERROR] an error occured, retrying... | [[{chunk.decode()}]]', flush=True)
         return
 
 while True:
